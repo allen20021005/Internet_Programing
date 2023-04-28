@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>1A2B Guessing Game</title>
+	<title>1A2B猜數字遊戲</title>
 </head>
 <body>
-	<h1>1A2B Guessing Game</h1>
-	<p>Guess a 4-digit number:</p>
+	<h1>1A2B猜數字遊戲</h1>
+	<p>猜一個四位數字:</p>
 	<input type="text" id="guess" name="guess">
-	<button onclick="checkGuess()">Guess</button>
+	<button onclick="checkGuess()">猜</button>
 	<p id="result"></p>
-	<h2>Guess History</h2>
+	<h2>猜測記錄</h2>
 	<ul id="guesses"></ul>
 	<script>
 		var answer = generateAnswer();
@@ -30,7 +30,12 @@
 		function checkGuess() {
 			var guess = document.getElementById("guess").value;
 			if (guess.length != 4) {
-				document.getElementById("result").innerHTML = "Please enter a 4-digit number.";
+				document.getElementById("result").innerHTML = "請輸入四位數字";
+				return;
+			}
+			if (hasDuplicates(guess)) {
+				document.getElementById("result").innerHTML = "請勿輸入重複的數字";
+				document.getElementById("guess").value = "";
 				return;
 			}
 			attempts++;
@@ -42,7 +47,7 @@
 					b++;
 				}
 				if (a == 4) {
-					document.getElementById("result").innerHTML = "Congratulations, you guessed the number in " + attempts + " attempts!";
+					document.getElementById("result").innerHTML = "恭喜你在 " + attempts + " 次猜中了數字!";
 					guesses.push({guess: guess, result: a + "A" + b + "B"});
 					showGuesses();
 					return;
@@ -61,6 +66,15 @@
 				li.appendChild(document.createTextNode(guesses[i].guess + " - " + guesses[i].result));
 				ul.appendChild(li);
 			}
+		}
+		
+		function hasDuplicates(str) {
+			for (var i = 0; i < str.length; i++) {
+				if (str.indexOf(str[i]) !== i) {
+					return true;
+				}
+			}
+			return false;
 		}
 	</script>
 </body>
